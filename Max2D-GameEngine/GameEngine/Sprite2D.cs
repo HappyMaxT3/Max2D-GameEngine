@@ -31,7 +31,7 @@ namespace Max2D_GameEngine.GameEngine
                 Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'.");
 
             Image temp = Image.FromFile(spritePath);
-            Bitmap sprite =  new Bitmap(temp, (int)this.Scale.X, (int)this.Scale.Y);
+            Bitmap sprite =  new Bitmap(temp);
             Sprite = sprite;
 
             Log.Info($"[SPRITE2D]({Directory}) - has been registered.");

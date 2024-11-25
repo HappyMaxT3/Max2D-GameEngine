@@ -13,9 +13,7 @@ namespace Max2D_GameEngine
         {
             backgroungColor = Color.Black;
 
-            //player = new Shape2D(new Vector2(10, 10), new Vector2(10, 10), "TestPlayer");
-
-            player = new Sprite2D(new Vector2(10, 10), new Vector2(20, 20), "Player/karatel", "Player");
+            player = new Sprite2D(new Vector2(10, 10), new Vector2(18, 24), "Player/karatel", "Player");
         }
 
         public override void OnDraw()
@@ -23,9 +21,10 @@ namespace Max2D_GameEngine
             
         }
 
+        float x = 0.5f;
         public override void OnUpdate()
         {
-
+            player.Position.X += x;
         }
 
     }
