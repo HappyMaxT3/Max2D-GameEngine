@@ -14,7 +14,7 @@ namespace Max2D_GameEngine.GameEngine
 	public abstract class GameEngineClass
 	{
 		public Vector2 ScreenSize = new Vector2(512, 512);
-		private string Title = "Game Title";
+		private string Title = "GameTitle";
 		private Canvas Window = null;
 
 		public GameEngine(Vector2 ScreenSize, string Title)
