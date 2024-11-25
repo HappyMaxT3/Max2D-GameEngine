@@ -29,6 +29,8 @@ namespace Max2D_GameEngine.GameEngine
 
 		public GameEngine(Vector2 ScreenSize, string Title)
 		{
+            Log.Info("Game is starting...");
+
 			this.ScreenSize = ScreenSize;
 			this.Title = Title;
 
@@ -66,11 +68,11 @@ namespace Max2D_GameEngine.GameEngine
                     OnDraw();
                     Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); });
                     OnUpdate();
-                    Thread.Sleep(5);
+                    Thread.Sleep(1);
                 }
                 catch
                 {
-                    Console.WriteLine("game is loading...");
+                    Log.Error("Game has not been found...");
                 }
 
             }
@@ -79,7 +81,7 @@ namespace Max2D_GameEngine.GameEngine
 
         private void Renderer(object? sender, PaintEventArgs e)
         {
-            Graphics g =e.Graphics;
+            Graphics g = e.Graphics;
 
             g.Clear(backgroungColor);
 

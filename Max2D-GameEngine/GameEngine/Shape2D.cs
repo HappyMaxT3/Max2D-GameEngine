@@ -18,11 +18,14 @@ namespace Max2D_GameEngine.GameEngine
             this.Scale = Scale;
             this.Tag = Tag;
 
+            Log.Info($"[SHAPE2D]({Tag}) - has been registered.");
+
             GameEngine.RegisterShape(this);
         }
 
         public void DestroySelf()
         {
+            Log.Info($"[SHAPE2D]({Tag}) - has been destroyed.");
             GameEngine.UnRegisterShape(this);
         }
     }
