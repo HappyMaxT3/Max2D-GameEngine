@@ -22,7 +22,15 @@ namespace Max2D_GameEngine.GameEngine
             this.Directory = Directory;
             this.Tag = Tag;
 
-            Image temp = Image.FromFile($"Assets/Sprites/{Directory}.png");
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            string projectPath = System.IO.Path.Combine(basePath, @"..\..\..\Assets\Sprites");
+
+            string spritePath = System.IO.Path.Combine(projectPath, $"{Directory}.png");
+
+            if (!System.IO.File.Exists(spritePath))
+                Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'.");
+
+            Image temp = Image.FromFile(spritePath);
             Bitmap sprite =  new Bitmap(temp, (int)this.Scale.X, (int)this.Scale.Y);
             Sprite = sprite;
 
