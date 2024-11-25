@@ -10,10 +10,6 @@ namespace Max2D_GameEngine.GameEngine
             this.DoubleBuffered = true;
         }
 
-        //private void InitializeComponent()
-        //{
-
-        //}
     }
 
     public abstract class GameEngine
@@ -24,6 +20,7 @@ namespace Max2D_GameEngine.GameEngine
         private Thread GameLoopThread = null;
 
         private static List<Shape2D> AllShapes = new List<Shape2D>();
+        private static List<Sprite2D> AllSprites = new List<Sprite2D>();
 
         public Color backgroungColor = Color.Beige;
 
@@ -57,6 +54,16 @@ namespace Max2D_GameEngine.GameEngine
             AllShapes.Remove(shape);
         }
 
+        public static void RegisterSprite(Sprite2D sprite)
+        {
+            AllSprites.Add(sprite);
+        }
+
+        public static void UnRegisterSprite(Sprite2D sprite)
+        {
+            AllSprites.Remove(sprite);
+        }
+
         private void GameLoop()
         {
             OnLoad();
@@ -88,6 +95,11 @@ namespace Max2D_GameEngine.GameEngine
             foreach (Shape2D shape in AllShapes)
             {
                 g.FillRectangle(new SolidBrush(Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
+            }
+
+            foreach (Sprite2D sprites in AllSprites)
+            {
+                g.DrawImage(sprites.Sprite, sprites.Position.X, sprites.Position.Y, sprites.Scale.X, sprites.Scale.Y);
             }
 
         }
