@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Max2D_GameEngine;
+using System;
 
 namespace GameEngine
 {
@@ -6,7 +7,7 @@ namespace GameEngine
     {
         static void Main(string[] arg)
         {
-            Console.WriteLine("Pidaras");
+            DemoGame game = new DemoGame();
         }
     }
 }
