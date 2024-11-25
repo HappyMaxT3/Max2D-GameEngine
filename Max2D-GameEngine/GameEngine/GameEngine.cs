@@ -23,6 +23,10 @@ namespace Max2D_GameEngine.GameEngine
 		private Canvas Window = null;
         private Thread GameLoopThread = null;
 
+        private static List<Shape2D> AllShapes = new List<Shape2D>();
+
+        public Color backgroungColor = Color.Beige;
+
 		public GameEngine(Vector2 ScreenSize, string Title)
 		{
 			this.ScreenSize = ScreenSize;
@@ -40,6 +44,16 @@ namespace Max2D_GameEngine.GameEngine
 
 			Application.Run(Window);
 		}
+
+        public static void RegisterShape(Shape2D shape)
+        {
+            AllShapes.Add(shape);
+        }
+
+        public static void UnRegisterShape(Shape2D shape)
+        {
+            AllShapes.Remove(shape);
+        }
 
         private void GameLoop()
         {
@@ -66,6 +80,14 @@ namespace Max2D_GameEngine.GameEngine
         private void Renderer(object? sender, PaintEventArgs e)
         {
             Graphics g =e.Graphics;
+
+            g.Clear(backgroungColor);
+
+            foreach (Shape2D shape in AllShapes)
+            {
+                g.FillRectangle(new SolidBrush(Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
+            }
+
         }
 
         public abstract void OnLoad();
