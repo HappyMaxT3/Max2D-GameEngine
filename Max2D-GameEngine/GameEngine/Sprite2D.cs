@@ -39,6 +39,35 @@ namespace Max2D_GameEngine.GameEngine
             GameEngine.RegisterSprite(this);
         }
 
+        public bool IsColliding(string tag)
+        {
+            /*
+            if (a.Position.X < b.Position.X + b.Scale.X &&
+                a.Position.X + a.Scale.X > b.Position.X &&
+                a.Position.Y < b.Position.Y + b.Scale.Y &&
+                a.Position.Y + a.Scale.Y > b.Position.Y)
+            {
+                return true;
+            }
+            */
+            foreach(Sprite2D b in GameEngine.AllSprites)
+            {
+                if (b.Tag == tag)
+                {
+                    if (Position.X < b.Position.X + b.Scale.X &&
+                        Position.X + Scale.X > b.Position.X &&
+                        Position.Y < b.Position.Y + b.Scale.Y &&
+                        Position.Y + Scale.Y > b.Position.Y)
+                    {
+                        return true;
+                    }
+                }
+
+            }
+
+            return false;
+        }
+
         public void DestroySelf()
         {
             GameEngine.UnRegisterSprite(this);

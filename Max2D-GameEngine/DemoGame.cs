@@ -12,15 +12,18 @@ namespace Max2D_GameEngine
         bool down;
 
         private Sprite2D player;
+        private Vector2 lastPos = Vector2.Zero();
 
         private string[,] Map =
         {
-            {".", ".", ".", ".", ".", ".", "." , "."},
-            {".", ".", ".", ".", ".", ".", "." , "."},
-            {".", ".", ".", ".", ".", ".", ".", "." },
-            {".", ".", ".", "g", "g", ".", ".", "g" },
             {"g", "g", "g", "g", "g", "g", "g", "g" },
-            {".", ".", ".", ".", ".", ".", ".", "." },
+            {"g", ".", ".", "g", ".", "g", ".", "g" },
+            {"g", ".", ".", "g", ".", ".", ".", "g" },
+            {"g", ".", ".", ".", ".", "g", ".", "g" },
+            {"g", ".", ".", "g", "g", "g", ".", "g" },
+            {"g", ".", ".", "g", ".", ".", ".", "g" },
+            {"g", ".", ".", "g", ".", ".", ".", "g" },
+            {"g", "g", "g", "g", "g", "g", "g", "g" },
         };
 
         public DemoGame() : base(new Vector2(615, 515), "2d Game DEMO") { }
@@ -68,6 +71,18 @@ namespace Max2D_GameEngine
             if (right)
             {
                 player.Position.X += 1.5f;
+            }
+
+            if (player.IsColliding("Ground"))
+            {
+                //Log.Info("Colliding");
+                player.Position.X = lastPos.X;
+                player.Position.Y = lastPos.Y;
+            }
+            else
+            {
+                lastPos.X = player.Position.X;
+                lastPos.Y = player.Position.Y;
             }
 
         }

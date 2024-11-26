@@ -19,8 +19,8 @@ namespace Max2D_GameEngine.GameEngine
 		private Canvas Window = null;
         private Thread GameLoopThread = null;
 
-        private static List<Shape2D> AllShapes = new List<Shape2D>();
-        private static List<Sprite2D> AllSprites = new List<Sprite2D>();
+        public static List<Shape2D> AllShapes = new List<Shape2D>();
+        public static List<Sprite2D> AllSprites = new List<Sprite2D>();
 
         public Color backgroungColor = Color.Beige;
 
