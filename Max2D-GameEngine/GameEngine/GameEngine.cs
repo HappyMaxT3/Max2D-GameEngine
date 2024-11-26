@@ -24,6 +24,9 @@ namespace Max2D_GameEngine.GameEngine
 
         public Color backgroungColor = Color.Beige;
 
+        public Vector2 CameraPosition = Vector2.Zero();
+        public float CameraAngle = 0.0f;
+
 		public GameEngine(Vector2 ScreenSize, string Title)
 		{
             Log.Info("Game is starting...");
@@ -92,6 +95,9 @@ namespace Max2D_GameEngine.GameEngine
 
             g.Clear(backgroungColor);
 
+            g.TranslateTransform(CameraPosition.X, CameraPosition.Y);
+            g.RotateTransform(CameraAngle);
+
             foreach (Shape2D shape in AllShapes)
             {
                 g.FillRectangle(new SolidBrush(Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
@@ -101,6 +107,7 @@ namespace Max2D_GameEngine.GameEngine
             {
                 g.DrawImage(sprites.Sprite, sprites.Position.X, sprites.Position.Y, sprites.Scale.X, sprites.Scale.Y);
             }
+
 
         }
 

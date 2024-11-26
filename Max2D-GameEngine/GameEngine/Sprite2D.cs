@@ -23,7 +23,7 @@ namespace Max2D_GameEngine.GameEngine
             this.Tag = Tag;
 
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
-            string projectPath = System.IO.Path.Combine(basePath, @"..\..\..\Assets\Sprites");
+            string projectPath = System.IO.Path.Combine(basePath, @"..\..\..\Assets\");
 
             string spritePath = System.IO.Path.Combine(projectPath, $"{Directory}.png");
 
