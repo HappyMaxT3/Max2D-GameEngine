@@ -55,19 +55,19 @@ namespace Max2D_GameEngine
         {
             if (up)
             {
-                player.Position.Y -= 0.5f;
+                player.Position.Y -= 1.5f;
             }
             if (down)
             {
-                player.Position.Y += 0.5f;
+                player.Position.Y += 1.5f;
             }
             if (left)
             {
-                player.Position.X -= 0.5f;
+                player.Position.X -= 1.5f;
             }
             if (right)
             {
-                player.Position.X += 0.5f;
+                player.Position.X += 1.5f;
             }
 
         }

@@ -89,7 +89,7 @@ namespace Max2D_GameEngine.GameEngine
                     OnDraw();
                     Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); });
                     OnUpdate();
-                    Thread.Sleep(1);
+                    Thread.Sleep(16);
                 }
                 catch
                 {
