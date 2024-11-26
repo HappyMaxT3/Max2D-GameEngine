@@ -6,6 +6,11 @@ namespace Max2D_GameEngine
 {
     class DemoGame : GameEngine.GameEngine
     {
+        bool right;
+        bool left;
+        bool up;
+        bool down;
+
         private Sprite2D player;
 
         private string[,] Map =
@@ -24,7 +29,7 @@ namespace Max2D_GameEngine
         {
             backgroungColor = Color.Black;
 
-            player = new Sprite2D(new Vector2(10, 10), new Vector2(18, 24), "Sprites/Player/karatel", "Player");
+            player = new Sprite2D(new Vector2(50, 50), new Vector2(18, 24), "Sprites/Player/karatel", "Player");
 
             for(int i = 0;  i < Map.GetLength(1); i++)
             {
@@ -48,8 +53,40 @@ namespace Max2D_GameEngine
 
         public override void OnUpdate()
         {
-            CameraPosition.X++;
-            CameraAngle++;
+            if (up)
+            {
+                player.Position.Y -= 0.5f;
+            }
+            if (down)
+            {
+                player.Position.Y += 0.5f;
+            }
+            if (left)
+            {
+                player.Position.X -= 0.5f;
+            }
+            if (right)
+            {
+                player.Position.X += 0.5f;
+            }
+
+        }
+
+        public override void GetKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.W) { up = true; }
+            if (e.KeyCode == Keys.S) { down = true; }
+            if (e.KeyCode == Keys.A) { left = true; }
+            if (e.KeyCode == Keys.D) { right = true; }
+
+        }
+
+        public override void GetKeyUp(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.W) { up = false; }
+            if (e.KeyCode == Keys.S) { down = false; }
+            if (e.KeyCode == Keys.A) { left = false; }
+            if (e.KeyCode == Keys.D) { right = false; }
 
         }
 

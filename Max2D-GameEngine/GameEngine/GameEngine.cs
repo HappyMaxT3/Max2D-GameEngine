@@ -39,13 +39,24 @@ namespace Max2D_GameEngine.GameEngine
 			Window.Text = this.Title;
             Window.Paint += Renderer;
 
-			
+            Window.KeyDown += Window_KeyDown;
+            Window.KeyUp += Window_KeyUp;
 
             GameLoopThread = new Thread(GameLoop);
             GameLoopThread.Start();
 
 			Application.Run(Window);
 		}
+
+        private void Window_KeyDown(object? sender, KeyEventArgs e)
+        {
+            GetKeyDown(e);
+        }
+
+        private void Window_KeyUp(object? sender, KeyEventArgs e)
+        {
+            GetKeyUp(e);
+        }
 
         public static void RegisterShape(Shape2D shape)
         {
@@ -115,7 +126,11 @@ namespace Max2D_GameEngine.GameEngine
         public abstract void OnUpdate();
         public abstract void OnDraw();
 
-	}
+        public abstract void GetKeyDown(KeyEventArgs e);
+        public abstract void GetKeyUp(KeyEventArgs e);
+
+
+    }
 
 }
 
