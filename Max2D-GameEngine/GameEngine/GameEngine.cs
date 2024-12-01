@@ -55,10 +55,7 @@ namespace Max2D_GameEngine.GameEngine
             Application.Run(Window);
         }
 
-        private void Window_FormClosing(object? sender, FormClosingEventArgs e)
-        {
-            GameLoopThread.Abort();
-        }
+        private void Window_FormClosing(object? sender, FormClosingEventArgs e) { }
 
         private void Window_KeyDown(object? sender, KeyEventArgs e)
         {

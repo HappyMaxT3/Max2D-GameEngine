@@ -16,28 +16,28 @@ namespace Max2D_GameEngine.GameEngine
         public Bitmap Sprite = null;
         public bool IsReference = false;
 
-        public Sprite2D(Vector2 Position, Vector2 Scale, string Directory, string Tag)
-        {
-            this.Position = Position;
-            this.Scale = Scale;
-            this.Directory = Directory;
-            this.Tag = Tag;
+        //public Sprite2D(Vector2 Position, Vector2 Scale, string Directory, string Tag)
+        //{
+        //    this.Position = Position;
+        //    this.Scale = Scale;
+        //    this.Directory = Directory;
+        //    this.Tag = Tag;
 
-            string spritePath = GetSpritePath(Directory);
+        //    string spritePath = GetSpritePath(Directory);
 
-            if (spritePath == null || !System.IO.File.Exists(spritePath))
-            {
-                Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'");
+        //    if (spritePath == null || !System.IO.File.Exists(spritePath))
+        //    {
+        //        Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'");
 
-                return;
-            }
+        //        return;
+        //    }
 
-            Sprite = LoadSprite(spritePath);
+        //    Sprite = LoadSprite(spritePath);
 
-            Log.Info($"[SPRITE2D]({Directory}) - has been registered.");
+        //    Log.Info($"[SPRITE2D]({Tag}) - has been registered.");
 
-            GameEngine.RegisterSprite(this);
-        }
+        //    GameEngine.RegisterSprite(this);
+        //}
 
         public Sprite2D(string Directory)
         {
@@ -55,7 +55,7 @@ namespace Max2D_GameEngine.GameEngine
 
             Sprite = LoadSprite(spritePath);
 
-            Log.Info($"[SPRITE2D]({Directory}) - has been registered.");
+            Log.Info($"[SPRITE2D]({Directory}) - has been found.");
 
             GameEngine.RegisterSprite(this);
         }
@@ -67,8 +67,6 @@ namespace Max2D_GameEngine.GameEngine
             this.Tag = Tag;
 
             Sprite = reference.Sprite;
-
-            Log.Info($"[SPRITE2D]({reference}) - has been registered.");
 
             GameEngine.RegisterSprite(this);
         }

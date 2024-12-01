@@ -36,7 +36,7 @@ namespace Max2D_GameEngine
 
             Sprite2D groundRef = new Sprite2D("Sprites/Tiles/GroundTile");
             Sprite2D starRef = new Sprite2D("Sprites/Items/star");
-            //Sprite2D playerRef = new Sprite2D("Sprites/Player/karatel");
+            Sprite2D playerRef = new Sprite2D("Sprites/Player/karatel");
 
             for (int i = 0;  i < Map.GetLength(1); i++)
             {
@@ -52,15 +52,13 @@ namespace Max2D_GameEngine
                         new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(15, 15), starRef, "Collectible");
                     }
 
-                    //if (Map[j, i] == "p")
-                    //{
-                    //    new Sprite2D(new Vector2(i * 50, j * 50), new Vector2(18, 24), playerRef, "Player");
-                    //}
+                    if (Map[j, i] == "p")
+                    {
+                        player = new Sprite2D(new Vector2(i * 45, j * 40), new Vector2(18, 24), playerRef, "Player");
+                    }
 
                 }
             }
-
-            player = new Sprite2D(new Vector2(50, 50), new Vector2(18, 24), "Sprites/Player/karatel", "Player");
 
         }
 
