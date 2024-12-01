@@ -45,10 +45,18 @@ namespace Max2D_GameEngine.GameEngine
             Window.KeyDown += Window_KeyDown;
             Window.KeyUp += Window_KeyUp;
 
+            Window.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Window.FormClosing += Window_FormClosing;
+
             GameLoopThread = new Thread(GameLoop) { IsBackground = true }; 
             GameLoopThread.Start();
 
             Application.Run(Window);
+        }
+
+        private void Window_FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            GameLoopThread.Abort();
         }
 
         private void Window_KeyDown(object? sender, KeyEventArgs e)
@@ -90,9 +98,12 @@ namespace Max2D_GameEngine.GameEngine
                 try
                 {
                     OnDraw();
+
                     Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); }); 
+
                     OnUpdate();
-                    Thread.Sleep(16); 
+
+                    Thread.Sleep(100); 
                 }
                 catch
                 {

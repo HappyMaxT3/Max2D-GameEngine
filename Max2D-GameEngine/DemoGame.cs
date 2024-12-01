@@ -21,8 +21,8 @@ namespace Max2D_GameEngine
             {"g", ".", ".", "g", ".", ".", ".", "g" },
             {"g", ".", ".", ".", ".", "g", ".", "g" },
             {"g", ".", ".", "g", "g", "g", ".", "g" },
-            {"g", ".", ".", "g", ".", ".", ".", "g" },
-            {"g", ".", ".", "g", ".", ".", ".", "g" },
+            {"g", ".", "c", "g", ".", ".", ".", "g" },
+            {"g", ".", "c", "g", ".", ".", ".", "g" },
             {"g", "g", "g", "g", "g", "g", "g", "g" },
         };
 
@@ -42,7 +42,12 @@ namespace Max2D_GameEngine
                     {
                         new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(40, 40), "Sprites/Tiles/GroundTile", "Ground");
                     }
-                    
+
+                    if (Map[j, i] == "c")
+                    {
+                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(15, 15), "Sprites/Items/star", "Collectible");
+                    }
+
                 }
             }
 
@@ -73,9 +78,14 @@ namespace Max2D_GameEngine
                 player.Position.X += 1.5f;
             }
 
-            if (player.IsColliding("Ground"))
+            Sprite2D star = player.IsColliding("Collectible");
+            if (star != null)
             {
-                //Log.Info("Colliding");
+                star.DestroySelf();
+            }
+
+            if (player.IsColliding("Ground") != null)
+            {
                 player.Position.X = lastPos.X;
                 player.Position.Y = lastPos.Y;
             }

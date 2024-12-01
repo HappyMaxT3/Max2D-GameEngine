@@ -55,7 +55,7 @@ namespace Max2D_GameEngine.GameEngine
 
         }
 
-        public bool IsColliding(string tag)
+        public Sprite2D IsColliding(string tag)
         {
             foreach (Sprite2D b in GameEngine.AllSprites)
             {
@@ -66,12 +66,12 @@ namespace Max2D_GameEngine.GameEngine
                         Position.Y < b.Position.Y + b.Scale.Y &&
                         Position.Y + Scale.Y > b.Position.Y)
                     {
-                        return true;
+                        return b;
                     }
                 }
             }
 
-            return false;
+            return null;
         }
 
         public void DestroySelf()
