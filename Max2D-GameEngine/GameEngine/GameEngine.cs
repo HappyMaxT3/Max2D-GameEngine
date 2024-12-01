@@ -32,7 +32,7 @@ namespace Max2D_GameEngine.GameEngine
 
         public GameEngine(Vector2 screenSize, string title)
         {
-            Log.Info("Game is starting...");
+            Log.Info("[GameEngine] Game is starting...");
 
             this.ScreenSize = screenSize;
             this.Title = title;
@@ -105,7 +105,7 @@ namespace Max2D_GameEngine.GameEngine
                 }
                 catch
                 {
-                    Log.Error("Game has not been found...");
+                    Log.Error("[GameEngine] Game has not been found...");
                 }
 
             }

@@ -24,6 +24,11 @@ namespace Max2D_GameEngine.GameEngine
 			return new Vector2(0, 0);
 		}
 
+		public string Vector2ToString()
+		{
+            return $"({X}, {Y})";
+        }
+
 	}
 
 }
