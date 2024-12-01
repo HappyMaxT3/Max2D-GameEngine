@@ -22,7 +22,7 @@ namespace Max2D_GameEngine
             {"g", ".", ".", ".", ".", "g", ".", "g" },
             {"g", ".", ".", "g", "g", "g", ".", "g" },
             {"g", ".", "c", "g", ".", ".", ".", "g" },
-            {"g", ".", "c", "g", ".", ".", ".", "g" },
+            {"g", ".", "c", "g", "p", ".", ".", "g" },
             {"g", "g", "g", "g", "g", "g", "g", "g" },
         };
 
@@ -32,25 +32,35 @@ namespace Max2D_GameEngine
         {
             BackgroundColor = Color.Black;
 
-            player = new Sprite2D(new Vector2(50, 50), new Vector2(18, 24), "Sprites/Player/karatel", "Player");
+            CameraZoom = new Vector2(0.9f, 0.9f);
 
-            for(int i = 0;  i < Map.GetLength(1); i++)
+            Sprite2D groundRef = new Sprite2D("Sprites/Tiles/GroundTile");
+            Sprite2D starRef = new Sprite2D("Sprites/Items/star");
+            //Sprite2D playerRef = new Sprite2D("Sprites/Player/karatel");
+
+            for (int i = 0;  i < Map.GetLength(1); i++)
             {
                 for(int j = 0; j < Map.GetLength(0); j++)
                 {
                     if (Map[j, i] == "g") 
                     {
-                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(40, 40), "Sprites/Tiles/GroundTile", "Ground");
+                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(40, 40), groundRef, "Ground");
                     }
 
                     if (Map[j, i] == "c")
                     {
-                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(15, 15), "Sprites/Items/star", "Collectible");
+                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(15, 15), starRef, "Collectible");
                     }
+
+                    //if (Map[j, i] == "p")
+                    //{
+                    //    new Sprite2D(new Vector2(i * 50, j * 50), new Vector2(18, 24), playerRef, "Player");
+                    //}
 
                 }
             }
 
+            player = new Sprite2D(new Vector2(50, 50), new Vector2(18, 24), "Sprites/Player/karatel", "Player");
 
         }
 
@@ -61,6 +71,8 @@ namespace Max2D_GameEngine
 
         public override void OnUpdate()
         {
+            if (player == null) { return; }
+
             if (up)
             {
                 player.Position.Y -= 1.5f;

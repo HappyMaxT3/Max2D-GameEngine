@@ -14,8 +14,8 @@ namespace Max2D_GameEngine.GameEngine
         public string Directory = "";
         public string Tag = "";
         public Bitmap Sprite = null;
+        public bool IsReference = false;
 
-        // Конструктор
         public Sprite2D(Vector2 Position, Vector2 Scale, string Directory, string Tag)
         {
             this.Position = Position;
@@ -35,6 +35,40 @@ namespace Max2D_GameEngine.GameEngine
             Sprite = LoadSprite(spritePath);
 
             Log.Info($"[SPRITE2D]({Directory}) - has been registered.");
+
+            GameEngine.RegisterSprite(this);
+        }
+
+        public Sprite2D(string Directory)
+        {
+            this.IsReference = true;
+            this.Directory = Directory;
+
+            string spritePath = GetSpritePath(Directory);
+
+            if (spritePath == null || !System.IO.File.Exists(spritePath))
+            {
+                Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'");
+
+                return;
+            }
+
+            Sprite = LoadSprite(spritePath);
+
+            Log.Info($"[SPRITE2D]({Directory}) - has been registered.");
+
+            GameEngine.RegisterSprite(this);
+        }
+
+        public Sprite2D(Vector2 Position, Vector2 Scale, Sprite2D reference, string Tag)
+        {
+            this.Position = Position;
+            this.Scale = Scale;
+            this.Tag = Tag;
+
+            Sprite = reference.Sprite;
+
+            Log.Info($"[SPRITE2D]({reference}) - has been registered.");
 
             GameEngine.RegisterSprite(this);
         }

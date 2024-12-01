@@ -24,8 +24,9 @@ namespace Max2D_GameEngine.GameEngine
         public static List<Shape2D> AllShapes = new List<Shape2D>();
         public static List<Sprite2D> AllSprites = new List<Sprite2D>();
 
-        public Color BackgroundColor = Color.Beige; 
+        public Color BackgroundColor = Color.Beige;
 
+        public Vector2 CameraZoom = new Vector2(1,1);
         public Vector2 CameraPosition = Vector2.Zero();
         public float CameraAngle = 0.0f;
 
@@ -103,7 +104,7 @@ namespace Max2D_GameEngine.GameEngine
 
                     OnUpdate();
 
-                    Thread.Sleep(100); 
+                    Thread.Sleep(50); 
                 }
                 catch
                 {
@@ -122,18 +123,24 @@ namespace Max2D_GameEngine.GameEngine
 
             g.TranslateTransform(CameraPosition.X, CameraPosition.Y);
             g.RotateTransform(CameraAngle);
+            g.ScaleTransform(CameraZoom.X, CameraZoom.Y);
 
-            foreach (Shape2D shape in AllShapes)
+            try
             {
-                g.FillRectangle(new SolidBrush(Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
-            }
+                foreach (Shape2D shape in AllShapes)
+                {
+                    g.FillRectangle(new SolidBrush(Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
+                }
 
-            for (int i = 0; i < AllSprites.Count; i++)
-            {
-                Sprite2D sprite = AllSprites[i];
-                g.DrawImage(sprite.Sprite, sprite.Position.X, sprite.Position.Y, sprite.Scale.X, sprite.Scale.Y);
+                foreach (Sprite2D sprite in AllSprites)
+                {
+                    if (!sprite.IsReference)
+                    {
+                        g.DrawImage(sprite.Sprite, sprite.Position.X, sprite.Position.Y, sprite.Scale.X, sprite.Scale.Y);
+                    }
+                }
             }
-
+            catch { }
 
         }
 

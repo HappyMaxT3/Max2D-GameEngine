@@ -20,4 +20,9 @@
   <ItemGroup>
     <None Remove="GameEngine\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Box2D.NetStandard" Version="1.0.4" />
+    <PackageReference Include="Box2DX" Version="2.0.2" />
+  </ItemGroup>
 </Project>
