@@ -24,7 +24,7 @@ namespace Max2D_GameEngine.GameEngine
 
         public static void Warning(string logMessage)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine($"[WARNING] - {logMessage}");
             Console.ForegroundColor = ConsoleColor.White;
         }

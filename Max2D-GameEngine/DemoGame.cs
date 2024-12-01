@@ -12,6 +12,9 @@ namespace Max2D_GameEngine
         bool down;
 
         private Sprite2D player;
+
+        private float playerSpeed = 2.5f;
+
         private Vector2 lastPos = Vector2.Zero();
 
         private string[,] Map =
@@ -21,18 +24,18 @@ namespace Max2D_GameEngine
             {"g", ".", ".", "g", ".", ".", ".", "g" },
             {"g", ".", ".", ".", ".", "g", ".", "g" },
             {"g", ".", ".", "g", "g", "g", ".", "g" },
-            {"g", ".", "c", "g", ".", ".", ".", "g" },
+            {"g", ".", "c", "g", ".", ".", "c", "g" },
             {"g", ".", "c", "g", "p", ".", ".", "g" },
             {"g", "g", "g", "g", "g", "g", "g", "g" },
         };
 
-        public DemoGame() : base(new Vector2(615, 515), "2d Game DEMO") { }
+        public DemoGame() : base(new Vector2(615, 515), "2D-DemoGame") { }
  
         public override void OnLoad()
         {
             BackgroundColor = Color.Black;
 
-            CameraZoom = new Vector2(0.9f, 0.9f);
+            CameraZoom = new Vector2(1.5f, 1.5f);
 
             Sprite2D groundRef = new Sprite2D("Sprites/Tiles/GroundTile");
             Sprite2D starRef = new Sprite2D("Sprites/Items/star");
@@ -73,19 +76,19 @@ namespace Max2D_GameEngine
 
             if (up)
             {
-                player.Position.Y -= 1.5f;
+                player.Position.Y -= playerSpeed;
             }
             if (down)
             {
-                player.Position.Y += 1.5f;
+                player.Position.Y += playerSpeed;
             }
             if (left)
             {
-                player.Position.X -= 1.5f;
+                player.Position.X -= playerSpeed;
             }
             if (right)
             {
-                player.Position.X += 1.5f;
+                player.Position.X += playerSpeed;
             }
 
             Sprite2D star = player.IsColliding("Collectible");

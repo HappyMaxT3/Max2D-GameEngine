@@ -16,29 +16,6 @@ namespace Max2D_GameEngine.GameEngine
         public Bitmap Sprite = null;
         public bool IsReference = false;
 
-        //public Sprite2D(Vector2 Position, Vector2 Scale, string Directory, string Tag)
-        //{
-        //    this.Position = Position;
-        //    this.Scale = Scale;
-        //    this.Directory = Directory;
-        //    this.Tag = Tag;
-
-        //    string spritePath = GetSpritePath(Directory);
-
-        //    if (spritePath == null || !System.IO.File.Exists(spritePath))
-        //    {
-        //        Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'");
-
-        //        return;
-        //    }
-
-        //    Sprite = LoadSprite(spritePath);
-
-        //    Log.Info($"[SPRITE2D]({Tag}) - has been registered.");
-
-        //    GameEngine.RegisterSprite(this);
-        //}
-
         public Sprite2D(string Directory)
         {
             this.IsReference = true;
@@ -48,16 +25,13 @@ namespace Max2D_GameEngine.GameEngine
 
             if (spritePath == null || !System.IO.File.Exists(spritePath))
             {
-                Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'");
+                Log.Warning($"[SPRITE2D]({Directory}) not found at path '{spritePath}'");
 
                 return;
             }
 
             Sprite = LoadSprite(spritePath);
 
-            Log.Info($"[SPRITE2D]({Directory}) - has been found.");
-
-            GameEngine.RegisterSprite(this);
         }
 
         public Sprite2D(Vector2 Position, Vector2 Scale, Sprite2D reference, string Tag)
@@ -69,6 +43,7 @@ namespace Max2D_GameEngine.GameEngine
             Sprite = reference.Sprite;
 
             GameEngine.RegisterSprite(this);
+            Log.Info($"[SPRITE2D]({Tag}) - has been registered.");
         }
 
         private string GetSpritePath(string directory)
@@ -108,12 +83,8 @@ namespace Max2D_GameEngine.GameEngine
 
         public void DestroySelf()
         {
-            if (Sprite != null)
-            {
-                Sprite.Dispose();
-                Sprite = null;
-            }
-
+            Sprite.Dispose();
+            Log.Info($"[SPRITE2D]({this.Tag}) - deleted.");
             GameEngine.UnRegisterSprite(this);
 
         }

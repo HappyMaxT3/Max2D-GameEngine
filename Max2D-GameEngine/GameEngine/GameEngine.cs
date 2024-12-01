@@ -101,7 +101,7 @@ namespace Max2D_GameEngine.GameEngine
 
                     OnUpdate();
 
-                    Thread.Sleep(50); 
+                    Thread.Sleep(48); 
                 }
                 catch
                 {

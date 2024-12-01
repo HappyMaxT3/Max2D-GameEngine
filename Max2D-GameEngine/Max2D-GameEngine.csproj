@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup> -->
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
     <RootNamespace>Max2D_GameEngine</RootNamespace>
     <Nullable>enable</Nullable>
