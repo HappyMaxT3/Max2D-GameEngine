@@ -13,7 +13,7 @@ namespace Max2D_GameEngine
 
         private Sprite2D player;
 
-        private float playerSpeed = 2.5f;
+        private float playerSpeed = 3.5f;
 
         private Vector2 lastPos = Vector2.Zero();
 

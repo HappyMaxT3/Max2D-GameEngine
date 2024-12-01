@@ -74,7 +74,7 @@ namespace Max2D_GameEngine.GameEngine
                         Position.Y < b.Position.Y + b.Scale.Y &&
                         Position.Y + Scale.Y > b.Position.Y)
                     {
-                        Log.Info($"[SPRITE2D] Collided with: {b.Tag} at {b.Position.Vector2ToString()}");
+                        Log.Info($"[SPRITE2D]({b.Tag}) at {b.Position.Vector2ToString()} - collided");
                         return b;
                     }
                 }
@@ -86,7 +86,7 @@ namespace Max2D_GameEngine.GameEngine
         public void DestroySelf()
         {
             Sprite.Dispose();
-            Log.Info($"[SPRITE2D]({this.Tag}) at Position {this.Position.Vector2ToString()} - deleted.");
+            Log.Info($"[SPRITE2D]({this.Tag}) at {this.Position.Vector2ToString()} - deleted.");
             GameEngine.UnRegisterSprite(this);
 
         }
