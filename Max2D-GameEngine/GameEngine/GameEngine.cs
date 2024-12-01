@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Max2D_GameEngine.GameEngine
@@ -7,46 +10,46 @@ namespace Max2D_GameEngine.GameEngine
     {
         public Canvas()
         {
-            this.DoubleBuffered = true;
+            this.DoubleBuffered = true; 
         }
-
     }
 
     public abstract class GameEngine
-	{
-		public Vector2 ScreenSize = new Vector2(512, 512);
-		private string Title = "GameTitle";
-		private Canvas Window = null;
+    {
+        public Vector2 ScreenSize = new Vector2(512, 512);
+        private string Title = "GameTitle";
+        private Canvas Window = null;
         private Thread GameLoopThread = null;
 
         public static List<Shape2D> AllShapes = new List<Shape2D>();
         public static List<Sprite2D> AllSprites = new List<Sprite2D>();
 
-        public Color backgroungColor = Color.Beige;
+        public Color BackgroundColor = Color.Beige; 
 
         public Vector2 CameraPosition = Vector2.Zero();
         public float CameraAngle = 0.0f;
 
-		public GameEngine(Vector2 ScreenSize, string Title)
-		{
+        public GameEngine(Vector2 screenSize, string title)
+        {
             Log.Info("Game is starting...");
 
-			this.ScreenSize = ScreenSize;
-			this.Title = Title;
+            this.ScreenSize = screenSize;
+            this.Title = title;
 
-			Window = new Canvas();
-			Window.Size = new Size((int)this.ScreenSize.X, (int)this.ScreenSize.Y);
-			Window.Text = this.Title;
+            Window = new Canvas
+            {
+                Size = new Size((int)this.ScreenSize.X, (int)this.ScreenSize.Y),
+                Text = this.Title
+            };
             Window.Paint += Renderer;
-
             Window.KeyDown += Window_KeyDown;
             Window.KeyUp += Window_KeyUp;
 
-            GameLoopThread = new Thread(GameLoop);
+            GameLoopThread = new Thread(GameLoop) { IsBackground = true }; 
             GameLoopThread.Start();
 
-			Application.Run(Window);
-		}
+            Application.Run(Window);
+        }
 
         private void Window_KeyDown(object? sender, KeyEventArgs e)
         {
@@ -82,14 +85,14 @@ namespace Max2D_GameEngine.GameEngine
         {
             OnLoad();
 
-            while (GameLoopThread.IsAlive) 
+            while (GameLoopThread.IsAlive)
             {
                 try
                 {
                     OnDraw();
-                    Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); });
+                    Window.BeginInvoke((MethodInvoker)delegate { Window.Refresh(); }); 
                     OnUpdate();
-                    Thread.Sleep(16);
+                    Thread.Sleep(16); 
                 }
                 catch
                 {
@@ -104,7 +107,7 @@ namespace Max2D_GameEngine.GameEngine
         {
             Graphics g = e.Graphics;
 
-            g.Clear(backgroungColor);
+            g.Clear(BackgroundColor); 
 
             g.TranslateTransform(CameraPosition.X, CameraPosition.Y);
             g.RotateTransform(CameraAngle);
@@ -114,9 +117,10 @@ namespace Max2D_GameEngine.GameEngine
                 g.FillRectangle(new SolidBrush(Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
             }
 
-            foreach (Sprite2D sprites in AllSprites)
+            for (int i = 0; i < AllSprites.Count; i++)
             {
-                g.DrawImage(sprites.Sprite, sprites.Position.X, sprites.Position.Y, sprites.Scale.X, sprites.Scale.Y);
+                Sprite2D sprite = AllSprites[i];
+                g.DrawImage(sprite.Sprite, sprite.Position.X, sprite.Position.Y, sprite.Scale.X, sprite.Scale.Y);
             }
 
 
@@ -129,8 +133,6 @@ namespace Max2D_GameEngine.GameEngine
         public abstract void GetKeyDown(KeyEventArgs e);
         public abstract void GetKeyUp(KeyEventArgs e);
 
-
     }
 
 }
-

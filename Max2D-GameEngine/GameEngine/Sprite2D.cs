@@ -15,6 +15,7 @@ namespace Max2D_GameEngine.GameEngine
         public string Tag = "";
         public Bitmap Sprite = null;
 
+        // Конструктор
         public Sprite2D(Vector2 Position, Vector2 Scale, string Directory, string Tag)
         {
             this.Position = Position;
@@ -22,35 +23,41 @@ namespace Max2D_GameEngine.GameEngine
             this.Directory = Directory;
             this.Tag = Tag;
 
-            string basePath = AppDomain.CurrentDomain.BaseDirectory;
-            string projectPath = System.IO.Path.Combine(basePath, @"..\..\..\Assets\");
+            string spritePath = GetSpritePath(Directory);
 
-            string spritePath = System.IO.Path.Combine(projectPath, $"{Directory}.png");
+            if (spritePath == null || !System.IO.File.Exists(spritePath))
+            {
+                Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'");
 
-            if (!System.IO.File.Exists(spritePath))
-                Log.Error($"[SPRITE2D]({Tag}) not found at path '{spritePath}'.");
+                return;
+            }
 
-            Image temp = Image.FromFile(spritePath);
-            Bitmap sprite =  new Bitmap(temp);
-            Sprite = sprite;
+            Sprite = LoadSprite(spritePath);
 
             Log.Info($"[SPRITE2D]({Directory}) - has been registered.");
 
             GameEngine.RegisterSprite(this);
         }
 
+        private string GetSpritePath(string directory)
+        {
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            string projectPath = System.IO.Path.Combine(basePath, @"..\..\..\Assets\");
+
+            return System.IO.Path.Combine(projectPath, $"{directory}.png");
+        }
+        private Bitmap LoadSprite(string spritePath)
+        {
+            using (Image temp = Image.FromFile(spritePath))
+            {
+                return new Bitmap(temp);
+            }
+
+        }
+
         public bool IsColliding(string tag)
         {
-            /*
-            if (a.Position.X < b.Position.X + b.Scale.X &&
-                a.Position.X + a.Scale.X > b.Position.X &&
-                a.Position.Y < b.Position.Y + b.Scale.Y &&
-                a.Position.Y + a.Scale.Y > b.Position.Y)
-            {
-                return true;
-            }
-            */
-            foreach(Sprite2D b in GameEngine.AllSprites)
+            foreach (Sprite2D b in GameEngine.AllSprites)
             {
                 if (b.Tag == tag)
                 {
@@ -62,7 +69,6 @@ namespace Max2D_GameEngine.GameEngine
                         return true;
                     }
                 }
-
             }
 
             return false;
@@ -70,7 +76,17 @@ namespace Max2D_GameEngine.GameEngine
 
         public void DestroySelf()
         {
+            if (Sprite != null)
+            {
+                Sprite.Dispose();
+                Sprite = null;
+            }
+
             GameEngine.UnRegisterSprite(this);
+
         }
     }
+
+
 }
+

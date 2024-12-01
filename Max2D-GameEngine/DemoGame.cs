@@ -30,7 +30,7 @@ namespace Max2D_GameEngine
  
         public override void OnLoad()
         {
-            backgroungColor = Color.Black;
+            BackgroundColor = Color.Black;
 
             player = new Sprite2D(new Vector2(50, 50), new Vector2(18, 24), "Sprites/Player/karatel", "Player");
 
