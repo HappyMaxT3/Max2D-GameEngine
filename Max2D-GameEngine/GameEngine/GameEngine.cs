@@ -10,7 +10,12 @@ namespace Max2D_GameEngine.GameEngine
     {
         public Canvas()
         {
-            this.DoubleBuffered = true; 
+            this.DoubleBuffered = true;
+        }
+
+        private void InitializeComponent()
+        {
+
         }
     }
 

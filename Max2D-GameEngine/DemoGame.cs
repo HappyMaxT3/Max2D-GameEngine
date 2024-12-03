@@ -29,17 +29,20 @@ namespace Max2D_GameEngine
             {"g", "g", "g", "g", "g", "g", "g", "g" },
         };
 
-        public DemoGame() : base(new Vector2(615, 515), "2D-DemoGame") { }
+        public DemoGame() : base(new Vector2(615, 515), "DemoGame") { }
  
         public override void OnLoad()
         {
             BackgroundColor = Color.Black;
-
             CameraZoom = new Vector2(1.5f, 1.5f);
 
             Sprite2D groundRef = new Sprite2D("Sprites/Tiles/GroundTile");
             Sprite2D starRef = new Sprite2D("Sprites/Items/star");
             Sprite2D playerRef = new Sprite2D("Sprites/Player/karatel");
+
+            AudioManager.LoadBackgroundMusic("Media/sample-15s", "BackgroundMusic");
+            AudioManager.PlayBackgroundMusic();
+            AudioManager.LoadSound("Media/sample-3s", "CollectSound");
 
             for (int i = 0;  i < Map.GetLength(1); i++)
             {
@@ -94,6 +97,7 @@ namespace Max2D_GameEngine
             Sprite2D star = player.IsColliding("Collectible");
             if (star != null)
             {
+                AudioManager.PlaySound("CollectSound");
                 star.DestroySelf();
             }
 
