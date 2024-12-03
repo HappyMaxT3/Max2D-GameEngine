@@ -26,7 +26,7 @@ namespace Max2D_GameEngine.GameEngine
 
         public void DestroySelf()
         {
-            Log.Info($"[SHAPE2D]({Tag}) - has been destroyed.");
+            Log.Warning($"[SHAPE2D]({Tag}) - has been destroyed.");
 
             GameEngine.UnRegisterShape(this);
         }
