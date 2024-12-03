@@ -85,6 +85,7 @@ namespace Max2D_GameEngine.GameEngine
         public static void UnRegisterSprite(Sprite2D sprite)
         {
             AllSprites.Remove(sprite);
+
         }
 
         private void GameLoop()

@@ -85,7 +85,6 @@ namespace Max2D_GameEngine.GameEngine
 
         public void DestroySelf()
         {
-            Sprite.Dispose();
             Log.Info($"[SPRITE2D]({this.Tag}) at {this.Position.Vector2ToString()} - deleted.");
             GameEngine.UnRegisterSprite(this);
 
