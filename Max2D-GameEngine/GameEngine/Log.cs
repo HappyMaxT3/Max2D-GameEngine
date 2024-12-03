@@ -17,7 +17,7 @@ namespace Max2D_GameEngine.GameEngine
 
         public static void Info(string logMessage)
         {
-            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"[INFO] - {logMessage}");
             Console.ForegroundColor = ConsoleColor.White;
         }

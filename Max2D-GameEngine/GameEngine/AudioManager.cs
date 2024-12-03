@@ -17,13 +17,21 @@ namespace Max2D_GameEngine.GameEngine
             return Path.Combine(projectPath, $"{directory}.wav");
         }
 
+
+        public static AudioFileReader GetPositionedReader(this WaveOutEvent waveOut)
+        {
+            var field = typeof(WaveOutEvent)
+                .GetField("waveStream", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            return field?.GetValue(waveOut) as AudioFileReader;
+        }
+
         public static void LoadSound(string fileName, string tag)
         {
             string filePath = GetAudioPath(fileName);
 
             if (!File.Exists(filePath))
             {
-                Log.Warning($"[AUDIO] - Sound file not found: {filePath}");
+                Log.Error($"[AUDIO] - Sound file not found: {filePath}");
                 return;
             }
 
@@ -52,13 +60,24 @@ namespace Max2D_GameEngine.GameEngine
         {
             if (!soundEffects.ContainsKey(tag))
             {
-                Log.Warning($"[AUDIO] - Sound '{tag}' not found.");
+                Log.Warning($"[AUDIO]({tag}) - Sound not found by this tag.");
                 return;
             }
 
-            Log.Info($"[AUDIO]({tag}) - Start playing.");
-            soundEffects[tag].Play();
+            Log.Info($"[AUDIO]({tag}) - Started playing audio.");
+
+            var player = soundEffects[tag];
+            if (player is WaveOutEvent waveOut && waveOut.PlaybackState != PlaybackState.Stopped)
+            {
+                waveOut.Stop(); 
+            }
+
+            var reader = player.GetPositionedReader(); 
+            reader.Position = 0;
+
+            player.Play();
         }
+
 
         public static void LoadBackgroundMusic(string fileName, string tag)
         {
