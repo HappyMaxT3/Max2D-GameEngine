@@ -40,9 +40,9 @@ namespace Max2D_GameEngine
             Sprite2D starRef = new Sprite2D("Sprites/Items/star");
             Sprite2D playerRef = new Sprite2D("Sprites/Player/karatel");
 
-            AudioManager.LoadBackgroundMusic("Media/sample-15s", "BackgroundMusic");
+            AudioManager.LoadBackgroundMusic("Media/sample-15s", 0.2f, "BackgroundMusic");
             AudioManager.PlayBackgroundMusic();
-            AudioManager.LoadSound("Media/sample-3s", "CollectSound");
+            AudioManager.LoadSound("Media/sample-3s", 0.9f, "CollectSound");
 
             for (int i = 0;  i < Map.GetLength(1); i++)
             {
