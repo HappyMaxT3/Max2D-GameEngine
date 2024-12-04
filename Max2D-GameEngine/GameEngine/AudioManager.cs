@@ -1,13 +1,97 @@
 ﻿using NAudio.Wave;
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Max2D_GameEngine.GameEngine
 {
+    public abstract class AudioPlayer
+    {
+        protected WaveOutEvent player;
+        protected AudioFileReader reader;
+
+        public float Volume
+        {
+            get => reader?.Volume ?? 0.0f;
+            set
+            {
+                if (reader != null)
+                    reader.Volume = Math.Clamp(value, 0.0f, 1.0f);
+
+                if (player != null)
+                    player.Volume = Math.Clamp(value, 0.0f, 1.0f);
+            }
+        }
+
+        public void Load(string filePath, float volume)
+        {
+            if (!File.Exists(filePath))
+                Log.Error($"[AUDIO] - Audio file not found at {filePath}");
+
+            reader = new AudioFileReader(filePath);
+            player = new WaveOutEvent();
+            Volume = volume;
+
+            player.Init(reader);
+        }
+
+        public abstract void Play();
+
+        public void Stop()
+        {
+            player?.Stop();
+        }
+    }
+
+    public class SoundEffectPlayer : AudioPlayer
+    {
+        public override void Play()
+        {
+            if (player == null || reader == null)
+            {
+                Log.Warning("[AUDIO] - No sound loaded to play.");
+                return;
+            }
+
+            if (player.PlaybackState != PlaybackState.Stopped)
+                player.Stop();
+
+            reader.Position = 0;
+            player.Play();
+            Log.Info("[AUDIO] - Sound effect played.");
+        }
+    }
+
+    public class BackgroundMusicPlayer : AudioPlayer
+    {
+        public override void Play()
+        {
+            if (player == null || reader == null)
+            {
+                Log.Warning("[AUDIO] - No background music loaded to play.");
+                return;
+            }
+
+            player.PlaybackStopped += (sender, args) => Restart();
+            player.Play();
+            Log.Info("[AUDIO] - Background music started.");
+        }
+
+        private void Restart()
+        {
+            if (reader != null)
+            {
+                reader.Position = 0;
+                player.Play();
+                Log.Info("[AUDIO] - Background music restarted.");
+            }
+        }
+    }
+
     public static class AudioManager
     {
-        private static Dictionary<string, (WaveOutEvent player, AudioFileReader reader)> soundEffects = new();
-        private static WaveOutEvent backgroundMusicPlayer = null;
-        private static AudioFileReader backgroundMusicReader = null;
+        private static Dictionary<string, SoundEffectPlayer> soundEffects = new();
+        private static BackgroundMusicPlayer backgroundMusicPlayer;
 
         private static string GetAudioPath(string directory)
         {
@@ -21,34 +105,23 @@ namespace Max2D_GameEngine.GameEngine
         {
             string filePath = GetAudioPath(fileName);
 
-            if (!File.Exists(filePath))
-            {
-                Log.Error($"[AUDIO] - Sound file not found: {filePath}");
-                return;
-            }
-
             if (soundEffects.ContainsKey(tag))
             {
-                Log.Warning($"[AUDIO]({tag}) - Sound already loaded.");
+                Log.Warning($"[AUDIO] - Sound already loaded for tag: {tag}.");
                 return;
             }
 
             try
             {
-                var reader = new AudioFileReader(filePath);
-                var player = new WaveOutEvent();
+                var soundPlayer = new SoundEffectPlayer();
+                soundPlayer.Load(filePath, volume);
+                soundEffects[tag] = soundPlayer;
 
-                reader.Volume = Math.Clamp(volume, 0.0f, 1.0f);
-                player.Volume = Math.Clamp(volume, 0.0f, 1.0f);
-
-                player.Init(reader);
-                soundEffects[tag] = (player, reader);
-
-                Log.Info($"[AUDIO]({tag})({volume}) - Sound loaded successfully.");
+                Log.Info($"[AUDIO]({tag}) - Sound effect loaded successfully.");
             }
             catch (Exception ex)
             {
-                Log.Error($"[AUDIO]({tag}) - Error loading sound: {ex.Message}");
+                Log.Error($"[AUDIO]({tag}) - Error loading sound effect: {ex.Message}");
             }
         }
 
@@ -56,51 +129,26 @@ namespace Max2D_GameEngine.GameEngine
         {
             if (!soundEffects.ContainsKey(tag))
             {
-                Log.Warning($"[AUDIO]({tag}) - Sound not found by this tag.");
+                Log.Warning($"[AUDIO]({tag}) - Sound not found for tag.");
                 return;
             }
 
-            var (player, reader) = soundEffects[tag];
-
-            if (player.PlaybackState != PlaybackState.Stopped)
-            {
-                player.Stop();
-            }
-
-            reader.Position = 0;
-
-            player.Volume = reader.Volume;
-
-            player.Play();
-            Log.Info($"[AUDIO]({tag}) - Started playing audio.");
+            soundEffects[tag].Play();
         }
 
         public static void LoadBackgroundMusic(string fileName, float volume, string tag)
         {
             string filePath = GetAudioPath(fileName);
 
-            if (!File.Exists(filePath))
+            if (backgroundMusicPlayer != null)
             {
-                Log.Warning($"[AUDIO] - Background music file not found: {filePath}");
-
-                return;
+                Log.Warning($"[AUDIO] - Background music already loaded. Overwriting for {tag}.");
             }
 
             try
             {
-
-                backgroundMusicReader = new AudioFileReader(filePath);
-                backgroundMusicPlayer = new WaveOutEvent();
-
-                backgroundMusicReader.Volume = Math.Clamp(volume, 0.0f, 1.0f);
-                backgroundMusicPlayer.Volume = Math.Clamp(volume, 0.0f, 1.0f);
-
-                backgroundMusicPlayer.Init(backgroundMusicReader);
-
-                backgroundMusicPlayer.PlaybackStopped += (sender, args) =>
-                {
-                    RestartBackgroundMusic();
-                };
+                backgroundMusicPlayer = new BackgroundMusicPlayer();
+                backgroundMusicPlayer.Load(filePath, volume);
 
                 Log.Info($"[AUDIO]({tag})({volume}) - Background music loaded successfully.");
             }
@@ -114,32 +162,22 @@ namespace Max2D_GameEngine.GameEngine
         {
             if (backgroundMusicPlayer == null)
             {
-                Log.Warning("[AUDIO] - No background music loaded.");
+                Log.Warning("[AUDIO] - No background music loaded to play.");
                 return;
             }
 
-            backgroundMusicPlayer.Volume = backgroundMusicReader.Volume;
-
             backgroundMusicPlayer.Play();
-            Log.Info("[AUDIO] - Start playing background music.");
         }
 
         public static void StopBackgroundMusic()
         {
-            backgroundMusicPlayer?.Stop();
-        }
-
-        private static void RestartBackgroundMusic()
-        {
-            if (backgroundMusicReader != null)
+            if (backgroundMusicPlayer == null)
             {
-                backgroundMusicReader.Position = 0;
-                backgroundMusicPlayer?.Play();
-
-                Log.Info("[AUDIO] - Background music restarted.");
+                Log.Warning("[AUDIO] - No background music loaded to stop.");
+                return;
             }
+
+            backgroundMusicPlayer.Stop();
         }
-
     }
-
 }
