@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using Box2DX.Collision;
+using Box2DX.Common;
+using Box2DX.Dynamics;
 
 namespace Max2D_GameEngine.GameEngine
 {
@@ -29,11 +32,19 @@ namespace Max2D_GameEngine.GameEngine
         public static List<Shape2D> AllShapes = new List<Shape2D>();
         public static List<Sprite2D> AllSprites = new List<Sprite2D>();
 
-        public Color BackgroundColor = Color.Beige;
+        public System.Drawing.Color BackgroundColor = System.Drawing.Color.Beige;
 
         public Vector2 CameraZoom = new Vector2(1,1);
         public Vector2 CameraPosition = Vector2.Zero();
         public float CameraAngle = 0.0f;
+
+        //AABB worldAABB = new AABB
+        //{
+        //    UpperBound = new Vector2(100, 100),
+        //    LowerBound = new Vector2(-100, -100)
+        //};
+
+        Vector2 gravity = new Vector2(0.0f, -10.0f);
 
         public GameEngine(Vector2 screenSize, string title)
         {
@@ -132,7 +143,7 @@ namespace Max2D_GameEngine.GameEngine
             {
                 foreach (Shape2D shape in AllShapes)
                 {
-                    g.FillRectangle(new SolidBrush(Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
+                    g.FillRectangle(new SolidBrush(System.Drawing.Color.Red), shape.Position.X, shape.Position.Y, shape.Scale.X, shape.Scale.Y);
                 }
 
                 foreach (Sprite2D sprite in AllSprites)

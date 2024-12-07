@@ -50,6 +50,7 @@ namespace Max2D_GameEngine.GameEngine
             if (player == null || reader == null)
             {
                 Log.Warning("[AUDIO] - No sound loaded to play.");
+
                 return;
             }
 
@@ -58,6 +59,7 @@ namespace Max2D_GameEngine.GameEngine
 
             reader.Position = 0;
             player.Play();
+
             Log.Info("[AUDIO] - Sound effect played.");
         }
     }
@@ -69,11 +71,13 @@ namespace Max2D_GameEngine.GameEngine
             if (player == null || reader == null)
             {
                 Log.Warning("[AUDIO] - No background music loaded to play.");
+
                 return;
             }
 
             player.PlaybackStopped += (sender, args) => Restart();
             player.Play();
+
             Log.Info("[AUDIO] - Background music started.");
         }
 
@@ -83,6 +87,7 @@ namespace Max2D_GameEngine.GameEngine
             {
                 reader.Position = 0;
                 player.Play();
+
                 Log.Info("[AUDIO] - Background music restarted.");
             }
         }
@@ -108,6 +113,7 @@ namespace Max2D_GameEngine.GameEngine
             if (soundEffects.ContainsKey(tag))
             {
                 Log.Warning($"[AUDIO] - Sound already loaded for tag: {tag}.");
+
                 return;
             }
 
@@ -130,6 +136,7 @@ namespace Max2D_GameEngine.GameEngine
             if (!soundEffects.ContainsKey(tag))
             {
                 Log.Warning($"[AUDIO]({tag}) - Sound not found for tag.");
+
                 return;
             }
 
@@ -162,7 +169,8 @@ namespace Max2D_GameEngine.GameEngine
         {
             if (backgroundMusicPlayer == null)
             {
-                Log.Warning("[AUDIO] - No background music loaded to play.");
+                Log.Error("[AUDIO] - No background music loaded to play.");
+
                 return;
             }
 
@@ -173,11 +181,14 @@ namespace Max2D_GameEngine.GameEngine
         {
             if (backgroundMusicPlayer == null)
             {
-                Log.Warning("[AUDIO] - No background music loaded to stop.");
+                Log.Error("[AUDIO] - No background music loaded to stop.");
+
                 return;
             }
 
             backgroundMusicPlayer.Stop();
         }
+
     }
+
 }

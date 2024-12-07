@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
-using System.Security.Policy;
+using System.IO;
 
 namespace Max2D_GameEngine.GameEngine
 {
@@ -17,6 +14,15 @@ namespace Max2D_GameEngine.GameEngine
         public Bitmap Sprite = null;
         public bool IsReference = false;
 
+        public Sprite2D()
+        {
+            this.Position = new Vector2(0, 0);
+            this.Scale = new Vector2(1, 1);
+            this.Tag = "DefaultSprite";
+            this.Sprite = null;
+            this.IsReference = false;
+        }
+
         public Sprite2D(string Directory)
         {
             this.IsReference = true;
@@ -24,15 +30,14 @@ namespace Max2D_GameEngine.GameEngine
 
             string spritePath = GetSpritePath(Directory);
 
-            if (spritePath == null || !System.IO.File.Exists(spritePath))
+            if (spritePath == null || !File.Exists(spritePath))
             {
                 Log.Warning($"[SPRITE2D]({Directory}) not found at path '{spritePath}'");
-
                 return;
             }
 
             Sprite = LoadSprite(spritePath);
-
+            Log.Info($"[SPRITE2D] Sprite loaded from '{spritePath}'.");
         }
 
         public Sprite2D(Vector2 Position, Vector2 Scale, Sprite2D reference, string Tag)
@@ -47,20 +52,39 @@ namespace Max2D_GameEngine.GameEngine
             Log.Info($"[SPRITE2D]({Tag}) - has been registered.");
         }
 
+        public Sprite2D(Sprite2D other)
+        {
+            this.Position = new Vector2(other.Position.X, other.Position.Y);
+            this.Scale = new Vector2(other.Scale.X, other.Scale.Y);
+            this.Directory = other.Directory;
+            this.Tag = other.Tag;
+            this.Sprite = other.Sprite;
+            this.IsReference = other.IsReference;
+        }
+
+        ~Sprite2D()
+        {
+            if (Sprite != null)
+            {
+                Sprite = null;
+                Log.Info($"[SPRITE2D]({this.Tag}) resources released.");
+            }
+        }
+
         private string GetSpritePath(string directory)
         {
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
-            string projectPath = System.IO.Path.Combine(basePath, @"..\..\..\Assets\");
+            string projectPath = Path.Combine(basePath, @"..\..\..\Assets\");
 
-            return System.IO.Path.Combine(projectPath, $"{directory}.png");
+            return Path.Combine(projectPath, $"{directory}.png");
         }
+
         private Bitmap LoadSprite(string spritePath)
         {
             using (Image temp = Image.FromFile(spritePath))
             {
                 return new Bitmap(temp);
             }
-
         }
 
         public Sprite2D IsColliding(string tag)
@@ -88,8 +112,12 @@ namespace Max2D_GameEngine.GameEngine
             Log.Warning($"[SPRITE2D]({this.Tag}) at {this.Position.Vector2ToString()} - deleted.");
             GameEngine.UnRegisterSprite(this);
 
+            if (Sprite != null)
+            {
+                Sprite = null;
+            }
         }
-    }
 
+    }
 
 }

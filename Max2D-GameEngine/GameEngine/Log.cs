@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Max2D_GameEngine.GameEngine
 {
@@ -35,6 +31,28 @@ namespace Max2D_GameEngine.GameEngine
             Console.WriteLine($"[ERROR] - {logMessage}");
             Console.ForegroundColor = ConsoleColor.White;
         }
+
+        public static void Info<T>(string logMessage)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"[INFO][{typeof(T).Name}] - {logMessage}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void Warning<T>(string logMessage)
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"[WARNING][{typeof(T).Name}] - {logMessage}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void Error<T>(string logMessage)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"[ERROR][{typeof(T).Name}] - {logMessage}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
     }
 
 }
