@@ -12,57 +12,118 @@ namespace Max2D_GameEngine
         bool down;
 
         private Sprite2D player;
-
+        private bool isPlayerAnimationPlaying = false;
         private float playerSpeed = 3.5f;
+        private int collectibleItems = 5;
 
         private Vector2 lastPos = Vector2.Zero();
 
         private string[,] Map =
         {
-            {"g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
-            {"g", ".", ".", "g", ".", "g", ".", ".", ".", "g" },
-            {"g", ".", ".", "g", ".", ".", ".", ".", "c", "g" },
-            {"g", ".", ".", ".", ".", "g", ".", ".", ".", "g" },
-            {"g", ".", ".", "g", "g", "g", ".", ".", ".", "g" },
-            {"g", ".", "c", "g", ".", ".", "c", ".", ".", "g" },
-            {"g", ".", "c", "g", "p", ".", ".", ".", ".", "g" },
-            {"g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
+            {"b", ".", ".", "f", "t", "r", "r", ".", ".", "r", "r", "o", "o", "o", "r" },
+            {"l", "p", " ", ".", ".", "r", "t", ".", ".", "r", "t", "f", "o", "o", "r" },
+            {"r", ".", ".", ".", ".", "r", ".", ".", ".", "r", ".", ".", ".", "f", "r" },
+            {"r", ".", ".", ".", ".", "t", ".", ".", ".", "t", ".", ".", "c", "h", "r" },
+            {"r", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "o", "o", "r" },
+            {"r", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "f", "r" },
+            {"r", ".", ".", ".", ".", "l", ".", ".", ".", ".", ".", ".", ".", ".", "r" },
+            {"r", ".", "c", ".", "g", "r", ".", ".", ".", ".", ".", ".", ".", ".", "r" },
+            {"r", ".", "l", "w", "r", "r", ".", ".", "l", ".", ".", "l", ".", ".", "r" },
+            {"r", "h", "r", "l", "r", "r", "c", "w", "r", "l", "w", "r", "g", "w", "r" },
+            {"s", "s", "s", "s", "s", "s", "s", "s", "s", "s", ".", ".", ".", ".", "." },
         };
 
-        public DemoGame() : base(new Vector2(615, 515), "DemoGame") { }
+        public DemoGame() : base(new Vector2(740, 550), "Treasure Hunter - DemoGame") { }
  
         public override void OnLoad()
         {
-            BackgroundColor = Color.Aqua;
-            CameraZoom = new Vector2(1.5f, 1.5f);
 
-            Sprite2D groundRef = new Sprite2D("Sprites/Tiles/GroundTile");
-            Sprite2D starRef = new Sprite2D("Sprites/Items/star");
+            BackgroundColor = Color.Aquamarine;
+            CameraZoom = new Vector2(1.22f, 1.22f);
 
-            AudioManager.LoadBackgroundMusic("Media/sample-15s", 0.2f, "BackgroundMusic");
+            Sprite2D backgroundRef = new Sprite2D("Sprites/Backgrounds/background");
+            Sprite2D sandRef = new Sprite2D("Sprites/Tiles/sand");
+            Sprite2D rockRef = new Sprite2D("Sprites/Tiles/rock");
+            Sprite2D cliffRef = new Sprite2D("Sprites/Tiles/cliff");
+            Sprite2D cliffCornerRef = new Sprite2D("Sprites/Tiles/cliffCorner");
+            Sprite2D horRockRef = new Sprite2D("Sprites/Tiles/horizontalRock");
+            Sprite2D shellRef = new Sprite2D("Sprites/Tiles/shell");
+            Sprite2D stalactiteRef = new Sprite2D("Sprites/Tiles/stalactite");
+            Sprite2D chestRef = new Sprite2D("Sprites/Items/chest");
+            Sprite2D goldRef = new Sprite2D("Sprites/Items/gold");
+
+            AudioManager.LoadBackgroundMusic("Media/underwaterSound", 0.9f, "BackgroundMusic");
             AudioManager.PlayBackgroundMusic();
-            AudioManager.LoadSound("Media/sample-3s", 0.9f, "CollectSound");
+            AudioManager.LoadSound("Media/collectSound", 0.5f, "CollectSound");
+            AudioManager.LoadSound("Media/bang", 0.6f, "BangSound");
+            AudioManager.LoadSound("Media/winnerSound", 0.7f, "WinnerSound");
 
             for (int i = 0;  i < Map.GetLength(1); i++)
             {
                 for(int j = 0; j < Map.GetLength(0); j++)
                 {
-                    if (Map[j, i] == "g") 
+                    if (Map[j, i] == "b")
                     {
-                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(40, 40), groundRef, "Ground");
+                        new Sprite2D(new Vector2(i, j), new Vector2(740, 550), backgroundRef, "NonInteractive");
+                    }
+
+                    if (Map[j, i] == "r")
+                    {
+                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(40, 45), rockRef, "Obstacle");
+                    }
+
+                    if (Map[j, i] == "t")
+                    {
+                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(40, 75), stalactiteRef, "Obstacle");
+                    }
+
+                    if (Map[j, i] == "l")
+                    {
+                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(40, 45), cliffRef, "Obstacle");
+                    }
+
+                    if (Map[j, i] == "f")
+                    {
+                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(50, 40), cliffCornerRef, "Obstacle");
+                    }
+
+                    if (Map[j, i] == "o")
+                    {
+                        new Sprite2D(new Vector2(i * 40 + 5, j * 40), new Vector2(50, 45), horRockRef, "Obstacle");
+                    }
+
+                    if (Map[j, i] == "s") 
+                    {
+                        new Sprite2D(new Vector2(i * 60, j * 40), new Vector2(100, 20), sandRef, "Obstacle");
+                    }
+
+                    if (Map[j, i] == "h")
+                    {
+                        new Sprite2D(new Vector2(i * 40 + 8, j * 40 + 28), new Vector2(28, 18), shellRef, "Obstacle");
                     }
 
                     if (Map[j, i] == "c")
                     {
-                        new Sprite2D(new Vector2(i * 40, j * 40), new Vector2(15, 15), starRef, "Collectible");
+                        new Sprite2D(new Vector2(i * 40 + 5, j * 40 + 28), new Vector2(25, 20), chestRef, "Collectible");
+                    }
+
+                    if (Map[j, i] == "g")
+                    {
+                        new Sprite2D(new Vector2(i * 40 + 5, j * 40 + 18), new Vector2(35, 25), goldRef, "Collectible");
                     }
 
                     if (Map[j, i] == "p")
                     {
-                        player = new AnimatedSprite2D("Sprites/Player/SubmarineFrames", 200, new Vector2(i * 15, j * 15), new Vector2(40, 24), "Player");
+                        player = new AnimatedSprite2D("Sprites/Player/SubmarineFrames", 200, new Vector2(i + 50, j + 10), new Vector2(50, 30), "Player");
+                    }
+
+                    if (Map[j, i] == "w")
+                    {
+                        new AnimatedSprite2D("Sprites/Tiles/Seaweed", 700, new Vector2(i * 40 + 5, j * 40 + 5), new Vector2(22, 40), "NonInteractive");
                     }
 
                 }
+
             }
 
         }
@@ -74,7 +135,9 @@ namespace Max2D_GameEngine
 
         public override void OnUpdate()
         {
-            if (player == null) { return; }
+            if (player == null) return;
+
+            bool isMoving = false;
 
             if (up)
             {
@@ -87,21 +150,48 @@ namespace Max2D_GameEngine
             if (left)
             {
                 player.Position.X -= playerSpeed;
+
+                isMoving = true;
             }
             if (right)
             {
                 player.Position.X += playerSpeed;
+
+                isMoving = true;
             }
 
-            Sprite2D star = player.IsColliding("Collectible");
-            if (star != null)
+            if (isMoving && !isPlayerAnimationPlaying)
+            {
+                ((AnimatedSprite2D)player).StartAnimation();
+                isPlayerAnimationPlaying = true;
+            }
+            else if (!isMoving && isPlayerAnimationPlaying)
+            {
+                ((AnimatedSprite2D)player).StopAnimation();
+                isPlayerAnimationPlaying = false;
+            }
+
+            Sprite2D collectible = player.IsColliding("Collectible");
+            if (collectible != null)
             {
                 AudioManager.PlaySound("CollectSound");
-                star.DestroySelf();
+                collectible.DestroySelf();
+
+                collectibleItems -= 1;
+                if (collectibleItems == 0)
+                {
+                    DisplayWinnerImage();
+                    return;
+                }
+
             }
 
-            if (player.IsColliding("Ground") != null)
+            player.Position.Y += 0.4f;
+
+            if (player.IsColliding("Obstacle") != null)
             {
+                AudioManager.PlaySound("BangSound");
+
                 player.Position.X = lastPos.X;
                 player.Position.Y = lastPos.Y;
             }
@@ -110,7 +200,6 @@ namespace Max2D_GameEngine
                 lastPos.X = player.Position.X;
                 lastPos.Y = player.Position.Y;
             }
-
         }
 
         public override void GetKeyDown(KeyEventArgs e)
@@ -131,6 +220,30 @@ namespace Max2D_GameEngine
 
             Log.Info($"[KEYCODE]({e.KeyCode})");
         }
+
+        private void DisplayWinnerImage()
+        {
+            Sprite2D winnerImage = new Sprite2D(
+                new Vector2((ScreenSize.X - 600) / 2, (ScreenSize.Y - 400) / 2),
+                new Vector2(400, 300),
+                new Sprite2D("UI/winner"),
+                "UI"
+            );
+
+            AudioManager.PlaySound("WinnerSound");
+
+            var timer = new System.Timers.Timer(5000);
+            timer.Elapsed += (s, e) =>
+            {
+                winnerImage.DestroySelf();
+
+                timer.Stop();
+                timer.Dispose();
+            };
+            timer.AutoReset = false;
+            timer.Start();
+        }
+
 
     }
 

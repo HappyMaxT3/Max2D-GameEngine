@@ -55,6 +55,7 @@ namespace Max2D_GameEngine.GameEngine
                     {
                         loadedFrames.Add(new Bitmap(temp));
                     }
+
                     Log.Info($"[ANIMATEDSPRITE2D]({frameFile}) - Frame loaded.");
                 }
                 catch (Exception ex)
@@ -85,12 +86,14 @@ namespace Max2D_GameEngine.GameEngine
         public void StopAnimation()
         {
             animationTimer?.Stop();
+
             Log.Info($"[ANIMATEDSPRITE2D]({Tag}) - Animation stopped.");
         }
 
         public void StartAnimation()
         {
             animationTimer?.Start();
+
             Log.Info($"[ANIMATEDSPRITE2D]({Tag}) - Animation started.");
         }
 
@@ -102,6 +105,7 @@ namespace Max2D_GameEngine.GameEngine
             {
                 frame.Dispose();
             }
+
             Log.Info($"[ANIMATEDSPRITE2D]({Tag}) - Resources released.");
         }
 

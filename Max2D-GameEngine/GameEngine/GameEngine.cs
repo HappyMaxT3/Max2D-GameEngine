@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using Box2DX.Collision;
-using Box2DX.Common;
-using Box2DX.Dynamics;
 
 namespace Max2D_GameEngine.GameEngine
 {
@@ -14,11 +12,6 @@ namespace Max2D_GameEngine.GameEngine
         public Canvas()
         {
             this.DoubleBuffered = true;
-        }
-
-        private void InitializeComponent()
-        {
-
         }
     }
 
@@ -34,17 +27,12 @@ namespace Max2D_GameEngine.GameEngine
 
         public System.Drawing.Color BackgroundColor = System.Drawing.Color.Beige;
 
+        public ImageLayout BackgroundImageLayout = ImageLayout.Stretch;
+
+
         public Vector2 CameraZoom = new Vector2(1,1);
         public Vector2 CameraPosition = Vector2.Zero();
         public float CameraAngle = 0.0f;
-
-        //AABB worldAABB = new AABB
-        //{
-        //    UpperBound = new Vector2(100, 100),
-        //    LowerBound = new Vector2(-100, -100)
-        //};
-
-        Vector2 gravity = new Vector2(0.0f, -10.0f);
 
         public GameEngine(Vector2 screenSize, string title)
         {
