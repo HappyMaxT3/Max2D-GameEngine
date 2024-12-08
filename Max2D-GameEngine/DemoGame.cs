@@ -19,26 +19,25 @@ namespace Max2D_GameEngine
 
         private string[,] Map =
         {
-            {"g", "g", "g", "g", "g", "g", "g", "g" },
-            {"g", ".", ".", "g", ".", "g", ".", "g" },
-            {"g", ".", ".", "g", ".", ".", ".", "g" },
-            {"g", ".", ".", ".", ".", "g", ".", "g" },
-            {"g", ".", ".", "g", "g", "g", ".", "g" },
-            {"g", ".", "c", "g", ".", ".", "c", "g" },
-            {"g", ".", "c", "g", "p", ".", ".", "g" },
-            {"g", "g", "g", "g", "g", "g", "g", "g" },
+            {"g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
+            {"g", ".", ".", "g", ".", "g", ".", ".", ".", "g" },
+            {"g", ".", ".", "g", ".", ".", ".", ".", "c", "g" },
+            {"g", ".", ".", ".", ".", "g", ".", ".", ".", "g" },
+            {"g", ".", ".", "g", "g", "g", ".", ".", ".", "g" },
+            {"g", ".", "c", "g", ".", ".", "c", ".", ".", "g" },
+            {"g", ".", "c", "g", "p", ".", ".", ".", ".", "g" },
+            {"g", "g", "g", "g", "g", "g", "g", "g", "g", "g" },
         };
 
         public DemoGame() : base(new Vector2(615, 515), "DemoGame") { }
  
         public override void OnLoad()
         {
-            BackgroundColor = Color.Black;
+            BackgroundColor = Color.Aqua;
             CameraZoom = new Vector2(1.5f, 1.5f);
 
             Sprite2D groundRef = new Sprite2D("Sprites/Tiles/GroundTile");
             Sprite2D starRef = new Sprite2D("Sprites/Items/star");
-            Sprite2D playerRef = new Sprite2D("Sprites/Player/karatel");
 
             AudioManager.LoadBackgroundMusic("Media/sample-15s", 0.2f, "BackgroundMusic");
             AudioManager.PlayBackgroundMusic();
@@ -60,7 +59,7 @@ namespace Max2D_GameEngine
 
                     if (Map[j, i] == "p")
                     {
-                        player = new Sprite2D(new Vector2(i * 45, j * 40), new Vector2(18, 24), playerRef, "Player");
+                        player = new AnimatedSprite2D("Sprites/Player/SubmarineFrames", 200, new Vector2(i * 15, j * 15), new Vector2(40, 24), "Player");
                     }
 
                 }
@@ -130,7 +129,9 @@ namespace Max2D_GameEngine
             if (e.KeyCode == Keys.A) { left = false; }
             if (e.KeyCode == Keys.D) { right = false; }
 
+            Log.Info($"[KEYCODE]({e.KeyCode})");
         }
 
     }
+
 }

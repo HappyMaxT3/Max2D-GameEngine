@@ -32,7 +32,7 @@ namespace Max2D_GameEngine.GameEngine
 
             if (spritePath == null || !File.Exists(spritePath))
             {
-                Log.Warning($"[SPRITE2D]({Directory}) not found at path '{spritePath}'");
+                Log.Error($"[SPRITE2D]({Directory}) - Not found at path '{spritePath}'");
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace Max2D_GameEngine.GameEngine
             Sprite = reference.Sprite;
 
             GameEngine.RegisterSprite(this);
-            Log.Info($"[SPRITE2D]({Tag}) - has been registered.");
+            Log.Info($"[SPRITE2D]({Tag}) - Has been registered.");
         }
 
         public Sprite2D(Sprite2D other)
@@ -67,7 +67,8 @@ namespace Max2D_GameEngine.GameEngine
             if (Sprite != null)
             {
                 Sprite = null;
-                Log.Info($"[SPRITE2D]({this.Tag}) resources released.");
+
+                Log.Info($"[SPRITE2D]({this.Tag}) - Resources released.");
             }
         }
 
@@ -98,7 +99,7 @@ namespace Max2D_GameEngine.GameEngine
                         Position.Y < b.Position.Y + b.Scale.Y &&
                         Position.Y + Scale.Y > b.Position.Y)
                     {
-                        Log.Info($"[SPRITE2D]({b.Tag}) at {b.Position.Vector2ToString()} - collided");
+                        Log.Info($"[SPRITE2D]({b.Tag}) at {b.Position.Vector2ToString()} - Collided");
                         return b;
                     }
                 }
@@ -109,7 +110,7 @@ namespace Max2D_GameEngine.GameEngine
 
         public void DestroySelf()
         {
-            Log.Warning($"[SPRITE2D]({this.Tag}) at {this.Position.Vector2ToString()} - deleted.");
+            Log.Warning($"[SPRITE2D]({this.Tag}) at {this.Position.Vector2ToString()} - Deleted.");
             GameEngine.UnRegisterSprite(this);
 
             if (Sprite != null)
