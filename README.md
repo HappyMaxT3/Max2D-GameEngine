@@ -122,6 +122,7 @@ Max2D-GameEngine/
    - `g` - Gold (Collectible)
    - `p` - Player start position
    - `w` - Seaweed
+   You can use other signs to draw the **Map**.
 
 5. **Player Movement**:
    - The player can move up, down, left, or right using the W, S, A, and D keys.
